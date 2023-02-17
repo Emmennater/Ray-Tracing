@@ -1,0 +1,39 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #202020;
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+  position: absolute;
+  top: 0px;
+}
+
+i {
+  color: white;
+  margin-left: 10px;
+}
+
+input {
+  position: absolute;
+}
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
