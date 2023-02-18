@@ -17,6 +17,7 @@ uniform vec2 camAngle;
 uniform float walls[100 * 4];
 
 #define PI 3.14159265358
+#define TWO_PI PI * 2.0
 
 #include ${shaderFunctions}
 #include ${shaderMath}

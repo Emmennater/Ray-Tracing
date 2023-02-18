@@ -84,6 +84,8 @@ float noise( vec2 p )
     return dot( n, vec3(70.0) );
 }
 
+float rand(float co) { return fract(sin(co*(91.3458)) * 47453.5453); }
+
 /* discontinuous pseudorandom uniformly distributed in [-0.5, +0.5]^3 */
 vec3 random3(vec3 c) {
 	float j = 4096.0*sin(dot(c,vec3(17.0, 59.4, 15.0)));
@@ -268,8 +270,9 @@ vec3 rotateVector3(vec3 vector, float pitchRadians, float yawRadians) {
 
 vec3 anglesToVec3(float horizontalAngle, float verticalAngle) {
   vec3 direction;
-  direction.x = cos(verticalAngle) * cos(horizontalAngle);
-  direction.y = cos(verticalAngle) * sin(horizontalAngle);
+  float cosVA = cos(verticalAngle);
+  direction.x = cosVA * cos(horizontalAngle);
+  direction.y = cosVA * sin(horizontalAngle);
   direction.z = sin(verticalAngle);
   return direction;
 }
@@ -279,6 +282,11 @@ vec2 vec3ToAngles(vec3 vector) {
   angles.x = atan2approx(vector.y, vector.x);
   angles.y = asin(vector.z);
   return angles;
+}
+
+float angleBetween(vec3 v1, vec3 v2) {
+  float dotProduct = dot(v1, v2);
+  return acos(dotProduct);
 }
 
 vec2 angleToSquareEdge(float angle) {
