@@ -137,15 +137,15 @@ float calculateShadowIntensity(vec3 intersectPoint, vec3 lightNormal, float dist
             // Calculate edge angle
             vec3 rayToSphere = sphere.center - intersectPoint;
             float distToSphere = length(rayToSphere);
-            float edgeAngle = distToSphere < lightRadius ?
+            float edgeAngle = distToSphere < sphere.radius ?
                 0.0 : asin(sphere.radius / distToSphere);
 
             // Calculate angle between intersect to light pos and sphere pos
             float angle = angleBetween(normalize(rayToSphere), lightNormal);
 
             // The intensity is how close the angle is to the edge angle
-            float blend = min(distToLight - result.a + 1.0, 10.0);
-            shadow += 1.0 - pow(angle / edgeAngle, blend); // * (result.a + 10.0) / (distToLight + 10.0);
+            float blend = min((result.a / distToLight) * 50.0 / lightRadius, 10.0);
+            shadow += 1.0 - pow(angle / edgeAngle, blend + 1.0); // * (result.a + 10.0) / (distToLight + 10.0);
         }
     }
 
@@ -165,6 +165,14 @@ float calculateRayLightIntensity(vec3 intersectPoint, vec3 surfaceNormal, Light 
 
     // float bright = 1.0;
     float bright = max(0.0, dot(lightNormal, surfaceNormal));
+    bright = bright * bright;
+
+    // Shiny spot in the middle
+    const float power = 10.0;
+    float brightSpot = pow(bright, power) * 0.8;
+    bright += brightSpot;
+
+    // Adjust brightness from distance and light strength
     bright *= 1.0 / (pow(distToLight, 2.0) / (luminance * light.strength) + 0.1);
     
     // Return intensity
